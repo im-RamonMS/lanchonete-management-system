@@ -1,0 +1,25 @@
+# IntelliJ IDEA
+.idea/
+*.iml
+out/
+target/
+
+# Maven
+log/
+*.log
+
+# Banco de Dados
+*.db
+*.sqlite
+
+# Sistema Operacional
+.DS_Store
+Thumbs.db
+
+# Ambiente
+.env
+*.env
+application-*.yml
+
+# Logs
+logs/
