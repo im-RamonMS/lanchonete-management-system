@@ -5,6 +5,7 @@ import lombok.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import jakarta.validation.constraints.DecimalMin;
 
 @Entity
 @Table(name = "estoque")
@@ -24,9 +25,11 @@ public class Estoque {
     private Produto produto;
 
     @Column(name = "quantidade", nullable = false, precision = 10, scale = 3)
+    @DecimalMin("0.00")
     private BigDecimal quantidade;
 
     @Column(name = "quantidade_minima", nullable = false, precision = 10, scale = 3)
+    @DecimalMin("0.00")
     @Builder.Default
     private BigDecimal quantidadeMinima = BigDecimal.ZERO;
 
@@ -74,5 +77,22 @@ public class Estoque {
         LocalDate hoje = LocalDate.now();
         LocalDate dataAlerta = dataValidade.minusDays(diasAntecedencia);
         return !hoje.isAfter(dataAlerta) && !hoje.isBefore(dataAlerta.minusDays(7));
+    }
+
+    public void aumentarQuantidade(BigDecimal quantidade) {
+        if (quantidade == null || quantidade.compareTo(BigDecimal.ZERO) <= 0) {
+            throw new IllegalArgumentException("Quantidade deve ser positiva");
+        }
+        this.quantidade = this.quantidade.add(quantidade);
+    }
+
+    public void diminuirQuantidade(BigDecimal quantidade) {
+        if (quantidade == null || quantidade.compareTo(BigDecimal.ZERO) <= 0) {
+            throw new IllegalArgumentException("Quantidade deve ser positiva");
+        }
+        if (this.quantidade.compareTo(quantidade) < 0) {
+            throw new IllegalArgumentException("Quantidade insuficiente em estoque");
+        }
+        this.quantidade = this.quantidade.subtract(quantidade);
     }
 }

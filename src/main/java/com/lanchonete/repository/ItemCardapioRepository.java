@@ -2,9 +2,11 @@ package com.lanchonete.repository;
 
 import com.lanchonete.model.entity.ItemCardapio;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -23,4 +25,14 @@ public interface ItemCardapioRepository extends JpaRepository<ItemCardapio, Long
     List<ItemCardapio> searchByNome(@Param("nome") String nome);
 
     boolean existsByNome(String nome);
+
+    @Modifying
+    @Transactional
+    @Query("UPDATE ItemCardapio i SET i.preco = :preco WHERE i.id = :id")
+    int atualizarPreco(@Param("id") Long id, @Param("preco") BigDecimal preco);
+
+    @Modifying
+    @Transactional
+    @Query("UPDATE ItemCardapio i SET i.ativo = :ativo WHERE i.id = :id")
+    int atualizarStatus(@Param("id") Long id, @Param("ativo") Boolean ativo);
 }
