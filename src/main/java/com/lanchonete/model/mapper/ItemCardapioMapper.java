@@ -9,7 +9,6 @@ import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 @Mapper(componentModel = "spring", uses = {ReceitaMapper.class})
 public interface ItemCardapioMapper {
@@ -61,9 +60,13 @@ public interface ItemCardapioMapper {
         return itemCardapio.getPreco().subtract(custoEstimado);
     }
 
-    // Método para simplificar ItemCardapio
-    @Mapping(target = "custoEstimado", ignore = true)
-    @Mapping(target = "margemLucro", ignore = true)
-    @Mapping(target = "ingredientes", ignore = true)
+    /* Comentei pq nao esta sendo usado
+    // Metodo para simplificar ItemCardapio
+    @Mapping(target = "id", source = "id")
+    @Mapping(target = "nome", source = "nome")
+    @Mapping(target = "preco", source = "preco")
+    @Mapping(target = "categoria", source = "categoria")
+    @Mapping(target = "ativo", source = "ativo")
     com.lanchonete.model.dto.ItemCardapioSimplesDTO toSimplesDTO(ItemCardapio itemCardapio);
+    */
 }
